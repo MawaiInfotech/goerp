@@ -1477,7 +1477,7 @@ class _RectificationDetailPageState extends State<RectificationDetailPage> {
 
   void _saveRecord() async {
     Map<String, dynamic> finalData = {
-      "emp_id": empCd,               // from login or screen
+      "emp_id": empCd,
       "unit_cd": widget.unitCode,
       "rect_types" : rectTypeCode.value,
       "comp_id": widget.compId,
@@ -1576,27 +1576,13 @@ class _RectificationDetailPageState extends State<RectificationDetailPage> {
                   onTap: () async {
                     // open breakdown reason dialog and wait for result
                     await _openBreakReasonDialog(model);
-                    // if (result != null) {
-                    //   // store locally and print
-                    //   setState(() {
-                    //     savedBreakdownReasons = result;
-                    //   });
-                    //   // debug print
-                    //   // ignore: avoid_print
-                    //   print("Saved BreakDown Reasons: $result");
-                    // }
                   },
                   child: _gradientButton("BreakDown Reason"),
                 ),
               ),
               Expanded(child: GestureDetector(onTap: () async {
                  await _openBreakSparePartDialog(model);
-                //
-                // if (result != null) {
-                //   setState(() {
-                //     sparePartList = result;
-                //   });
-                // }
+
 
               }, child: _gradientButton("Spare Part"))),
             ],
