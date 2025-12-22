@@ -9,10 +9,10 @@ class BreakdownDetailsBloc extends Cubit<BreakdownDetailsState>{
 
   final BreakdownService breakdownService;
 
-  Future<void> init()async{
+  Future<void> init(String unitCode)async{
     emit(BreakdownDetailsState.loading(state.breakdownDetailsModel));
     try{
-      final breakdownList = await breakdownService.getBreakdownDetailsList();
+      final breakdownList = await breakdownService.getBreakdownDetailsList(unitCode);
       emit(BreakdownDetailsState.content(breakdownList!));
     }on ApiError catch(error){
       emit(BreakdownDetailsState.failed(state.breakdownDetailsModel,  error.message));

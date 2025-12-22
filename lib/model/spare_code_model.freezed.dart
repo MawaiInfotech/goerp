@@ -26,6 +26,12 @@ mixin _$SpareCodeModel {
   String get description => throw _privateConstructorUsedError;
   @JsonKey(name: "item_type")
   String get itemType => throw _privateConstructorUsedError;
+  @JsonKey(name: "loc_cd")
+  String get loc_cd => throw _privateConstructorUsedError;
+  @JsonKey(name: "closing")
+  String get closing => throw _privateConstructorUsedError;
+  @JsonKey(name: "unit_cd")
+  String get unit_cd => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -42,7 +48,10 @@ abstract class $SpareCodeModelCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: "item_cd") String itemCode,
       @JsonKey(name: "item_desc") String description,
-      @JsonKey(name: "item_type") String itemType});
+      @JsonKey(name: "item_type") String itemType,
+      @JsonKey(name: "loc_cd") String loc_cd,
+      @JsonKey(name: "closing") String closing,
+      @JsonKey(name: "unit_cd") String unit_cd});
 }
 
 /// @nodoc
@@ -61,6 +70,9 @@ class _$SpareCodeModelCopyWithImpl<$Res, $Val extends SpareCodeModel>
     Object? itemCode = null,
     Object? description = null,
     Object? itemType = null,
+    Object? loc_cd = null,
+    Object? closing = null,
+    Object? unit_cd = null,
   }) {
     return _then(_value.copyWith(
       itemCode: null == itemCode
@@ -74,6 +86,18 @@ class _$SpareCodeModelCopyWithImpl<$Res, $Val extends SpareCodeModel>
       itemType: null == itemType
           ? _value.itemType
           : itemType // ignore: cast_nullable_to_non_nullable
+              as String,
+      loc_cd: null == loc_cd
+          ? _value.loc_cd
+          : loc_cd // ignore: cast_nullable_to_non_nullable
+              as String,
+      closing: null == closing
+          ? _value.closing
+          : closing // ignore: cast_nullable_to_non_nullable
+              as String,
+      unit_cd: null == unit_cd
+          ? _value.unit_cd
+          : unit_cd // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -90,7 +114,10 @@ abstract class _$$SpareCodeModelImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: "item_cd") String itemCode,
       @JsonKey(name: "item_desc") String description,
-      @JsonKey(name: "item_type") String itemType});
+      @JsonKey(name: "item_type") String itemType,
+      @JsonKey(name: "loc_cd") String loc_cd,
+      @JsonKey(name: "closing") String closing,
+      @JsonKey(name: "unit_cd") String unit_cd});
 }
 
 /// @nodoc
@@ -107,6 +134,9 @@ class __$$SpareCodeModelImplCopyWithImpl<$Res>
     Object? itemCode = null,
     Object? description = null,
     Object? itemType = null,
+    Object? loc_cd = null,
+    Object? closing = null,
+    Object? unit_cd = null,
   }) {
     return _then(_$SpareCodeModelImpl(
       itemCode: null == itemCode
@@ -121,6 +151,18 @@ class __$$SpareCodeModelImplCopyWithImpl<$Res>
           ? _value.itemType
           : itemType // ignore: cast_nullable_to_non_nullable
               as String,
+      loc_cd: null == loc_cd
+          ? _value.loc_cd
+          : loc_cd // ignore: cast_nullable_to_non_nullable
+              as String,
+      closing: null == closing
+          ? _value.closing
+          : closing // ignore: cast_nullable_to_non_nullable
+              as String,
+      unit_cd: null == unit_cd
+          ? _value.unit_cd
+          : unit_cd // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -131,7 +173,10 @@ class _$SpareCodeModelImpl implements _SpareCodeModel {
   const _$SpareCodeModelImpl(
       {@JsonKey(name: "item_cd") this.itemCode = "",
       @JsonKey(name: "item_desc") this.description = "",
-      @JsonKey(name: "item_type") this.itemType = ""});
+      @JsonKey(name: "item_type") this.itemType = "",
+      @JsonKey(name: "loc_cd") this.loc_cd = "",
+      @JsonKey(name: "closing") this.closing = "",
+      @JsonKey(name: "unit_cd") this.unit_cd = ""});
 
   factory _$SpareCodeModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$SpareCodeModelImplFromJson(json);
@@ -145,10 +190,19 @@ class _$SpareCodeModelImpl implements _SpareCodeModel {
   @override
   @JsonKey(name: "item_type")
   final String itemType;
+  @override
+  @JsonKey(name: "loc_cd")
+  final String loc_cd;
+  @override
+  @JsonKey(name: "closing")
+  final String closing;
+  @override
+  @JsonKey(name: "unit_cd")
+  final String unit_cd;
 
   @override
   String toString() {
-    return 'SpareCodeModel(itemCode: $itemCode, description: $description, itemType: $itemType)';
+    return 'SpareCodeModel(itemCode: $itemCode, description: $description, itemType: $itemType, loc_cd: $loc_cd, closing: $closing, unit_cd: $unit_cd)';
   }
 
   @override
@@ -161,12 +215,16 @@ class _$SpareCodeModelImpl implements _SpareCodeModel {
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.itemType, itemType) ||
-                other.itemType == itemType));
+                other.itemType == itemType) &&
+            (identical(other.loc_cd, loc_cd) || other.loc_cd == loc_cd) &&
+            (identical(other.closing, closing) || other.closing == closing) &&
+            (identical(other.unit_cd, unit_cd) || other.unit_cd == unit_cd));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, itemCode, description, itemType);
+  int get hashCode => Object.hash(
+      runtimeType, itemCode, description, itemType, loc_cd, closing, unit_cd);
 
   @JsonKey(ignore: true)
   @override
@@ -185,10 +243,12 @@ class _$SpareCodeModelImpl implements _SpareCodeModel {
 
 abstract class _SpareCodeModel implements SpareCodeModel {
   const factory _SpareCodeModel(
-          {@JsonKey(name: "item_cd") final String itemCode,
-          @JsonKey(name: "item_desc") final String description,
-          @JsonKey(name: "item_type") final String itemType}) =
-      _$SpareCodeModelImpl;
+      {@JsonKey(name: "item_cd") final String itemCode,
+      @JsonKey(name: "item_desc") final String description,
+      @JsonKey(name: "item_type") final String itemType,
+      @JsonKey(name: "loc_cd") final String loc_cd,
+      @JsonKey(name: "closing") final String closing,
+      @JsonKey(name: "unit_cd") final String unit_cd}) = _$SpareCodeModelImpl;
 
   factory _SpareCodeModel.fromJson(Map<String, dynamic> json) =
       _$SpareCodeModelImpl.fromJson;
@@ -202,6 +262,15 @@ abstract class _SpareCodeModel implements SpareCodeModel {
   @override
   @JsonKey(name: "item_type")
   String get itemType;
+  @override
+  @JsonKey(name: "loc_cd")
+  String get loc_cd;
+  @override
+  @JsonKey(name: "closing")
+  String get closing;
+  @override
+  @JsonKey(name: "unit_cd")
+  String get unit_cd;
   @override
   @JsonKey(ignore: true)
   _$$SpareCodeModelImplCopyWith<_$SpareCodeModelImpl> get copyWith =>

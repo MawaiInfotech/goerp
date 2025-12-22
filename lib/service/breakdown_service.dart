@@ -159,14 +159,12 @@ class BreakdownService {
     return null;
   }
 
-  Future<BreakdownDetailsModel?> getBreakdownDetailsList() async {
+  Future<BreakdownDetailsModel?> getBreakdownDetailsList(String unitCode) async {
     final url = '${root1}breakdownrectification/getRectificationBreakTypesSpare';
-    // final body = {
-    //   "token" : token,
-    //   "emp_code" : userId,
-    //   "cust_code" : custCode
-    // };
-    final response = await http.get(Uri.parse(url), headers: headers,);
+    final body = {
+      "unit_cd" : unitCode,
+    };
+    final response = await http.post(Uri.parse(url), headers: headers,body: json.encode(body));
     final responseBody = json.decode(response.body);
 
     try {

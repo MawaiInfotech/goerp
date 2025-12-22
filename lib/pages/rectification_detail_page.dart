@@ -80,6 +80,8 @@ class _RectificationDetailPageState extends State<RectificationDetailPage> {
   ValueNotifier<String> breakReasonName = ValueNotifier("Reason");
   ValueNotifier<String> breakReasonCode = ValueNotifier("");
   ValueNotifier<String> spareCode = ValueNotifier("");
+  ValueNotifier<String> locCode = ValueNotifier("");
+  ValueNotifier<String> closing = ValueNotifier("");
   ValueNotifier<String> spareName = ValueNotifier("Spare Code");
   ValueNotifier<String> itemType = ValueNotifier("Item type");
 
@@ -106,7 +108,7 @@ class _RectificationDetailPageState extends State<RectificationDetailPage> {
     submitTargetDetailsBloc = SubmitTargetDetailsBloc(breakdownService);
     submitBreakDetailsBloc = SubmitBreakDetailsBloc(breakdownService);
     breakdownDetailsBloc = BreakdownDetailsBloc(breakdownService);
-    breakdownDetailsBloc.init();
+    breakdownDetailsBloc.init(widget.unitCode);
     rectifiedByBloc = RectifiedByBloc(breakdownService);
     rectifiedByBloc.init();
     breakReasonBloc = BreakReasonBloc(breakdownService);
@@ -1072,8 +1074,7 @@ class _RectificationDetailPageState extends State<RectificationDetailPage> {
 
   Future<List<Map<String, dynamic>>?> openSpareEntryDialog(BreakdownDetailsModel model) {
     List<Map<String, dynamic>> rows = [
-      {"spareName": "", "spareCode": "", "itemType": "", "noOff": "", "others": ""}
-
+      {"spareName": "", "spareCode": "", "itemType": "", "noOff": "", "others": "","loc_cd" : "","closing" : "","error": ""}
     ];
 
     return showDialog<List<Map<String, dynamic>>>(
@@ -1130,99 +1131,136 @@ class _RectificationDetailPageState extends State<RectificationDetailPage> {
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.only(bottom: 10),
-                            child: Row(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Row(
+                                  children: [
 
-                                // SPARE CODE DROPDOWN
-                                Expanded(
-                                  flex: 3,
-                                  child: InkWell(
-                                    onTap: () async {
-                                      await _buildSpareCodeModel(model, index);
-                                      setState(() {
-                                        rows[index]["spareCode"] = spareCode.value;
-                                        rows[index]["spareName"] = spareName.value;
-                                        rows[index]["itemType"] = itemType.value;
-                                      });
-                                    },
+                                    // SPARE CODE DROPDOWN
+                                    Expanded(
+                                      flex: 3,
+                                      child: InkWell(
+                                        onTap: () async {
+                                          await _buildSpareCodeModel(model, index);
+                                          setState(() {
+                                            rows[index]["spareCode"] = spareCode.value;
+                                            rows[index]["spareName"] = spareName.value;
+                                            rows[index]["itemType"] = itemType.value;
+                                            rows[index]["loc_cd"] = locCode.value;
+                                            rows[index]["closing"] = closing.value;
+                                          });
+                                        },
 
-                                    child: Container(
-                                      height: 50,
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(8.0),
-                                        border: Border.all(color: Colors.grey.shade300),
-                                      ),
-                                      child:  Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: Text(rows[index]["spareName"] ?? "Spare Code",
-                                          style: const TextStyle(fontSize: 11),)
+                                        child: Container(
+                                          height: 50,
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(8.0),
+                                            border: Border.all(color: Colors.grey.shade300),
+                                          ),
+                                          child:  Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: Text(rows[index]["spareName"] ?? "Spare Code",
+                                              style: const TextStyle(fontSize: 11),)
+                                            ),
+                                            const Icon(Icons.arrow_drop_down)
+                                          ],
                                         ),
-                                        const Icon(Icons.arrow_drop_down)
-                                      ],
+                                        ),
+                                      ),
                                     ),
+
+                                    const SizedBox(width: 5),
+
+                                    // ITEM TYPE DROPDOWN
+                                    Expanded(
+                                      flex: 3,
+                                      child: Container(
+                                        height: 50,
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          border: Border.all(color: Colors.grey.shade300),
+                                        ),
+                                        child:  Text(rows[index]["itemType"] ?? "Type")
+
+                                      ),
+                                    ),
+
+                                    const SizedBox(width: 5),
+
+                                    // NO OFF
+                                    Expanded(
+                                      flex: 2,
+                                      child: TextField(
+                                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                        decoration: inputBoxDecoration(""),
+                                        onChanged: (v) {
+                                          setState(() {
+                                            rows[index]['noOff'] = v;
+
+                                            final enteredQty = double.tryParse(v) ?? 0;
+                                            final closingQty = double.tryParse(
+                                                rows[index]['closing']?.toString() ?? '0'
+                                            ) ??
+                                                0;
+
+                                            if (enteredQty > closingQty) {
+                                              rows[index]['error'] =
+                                              'Quantity cannot be more than available stock ($closingQty)';
+                                            } else {
+                                              rows[index]['error'] = '';
+                                            }
+                                          });
+                                        },
+                                      ),
+                                    ),
+
+
+                                    const SizedBox(width: 5),
+
+                                    // OTHERS
+                                    Expanded(
+                                      flex: 2,
+                                      child: TextField(
+                                        decoration: inputBoxDecoration(""),
+                                        onChanged: (v) => rows[index]['others'] = v,
+                                      ),
+                                    ),
+
+                                    const SizedBox(width: 5),
+
+                                    // DELETE BUTTON
+                                    Expanded(
+                                      flex: 1,
+                                      child: IconButton(
+                                        icon: const Icon(Icons.close, color: Colors.red),
+                                        onPressed: () {
+                                          if (rows.length > 1) {
+                                            setState(() => rows.removeAt(index));
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                // ERROR MESSAGE
+                                if ((rows[index]['error'] ?? '').isNotEmpty)
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 4, left: 8),
+                                    child: Text(
+                                      rows[index]['error'],
+                                      style: const TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 12,
+                                      ),
                                     ),
                                   ),
-                                ),
-
-                                const SizedBox(width: 5),
-
-                                // ITEM TYPE DROPDOWN
-                                Expanded(
-                                  flex: 3,
-                                  child: Container(
-                                    height: 50,
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(color: Colors.grey.shade300),
-                                    ),
-                                    child:  Text(rows[index]["itemType"] ?? "Type")
-
-                                  ),
-                                ),
-
-                                const SizedBox(width: 5),
-
-                                // NO OFF
-                                Expanded(
-                                  flex: 2,
-                                  child: TextField(
-                                    keyboardType: TextInputType.number,
-                                    decoration: inputBoxDecoration(""),
-                                    onChanged: (v) => rows[index]['noOff'] = v,
-                                  ),
-                                ),
-
-                                const SizedBox(width: 5),
-
-                                // OTHERS
-                                Expanded(
-                                  flex: 2,
-                                  child: TextField(
-                                    decoration: inputBoxDecoration(""),
-                                    onChanged: (v) => rows[index]['others'] = v,
-                                  ),
-                                ),
-
-                                const SizedBox(width: 5),
-
-                                // DELETE BUTTON
-                                Expanded(
-                                  flex: 1,
-                                  child: IconButton(
-                                    icon: const Icon(Icons.close, color: Colors.red),
-                                    onPressed: () {
-                                      if (rows.length > 1) {
-                                        setState(() => rows.removeAt(index));
-                                      }
-                                    },
-                                  ),
-                                ),
                               ],
                             ),
                           );
@@ -1236,7 +1274,7 @@ class _RectificationDetailPageState extends State<RectificationDetailPage> {
                             icon: const Icon(Icons.add_circle, size: 32, color: Colors.green),
                             onPressed: () {
                               setState(() {
-                                rows.add({"spareName": "", "spareCode": "", "itemType": "", "noOff": "", "others": ""}
+                                rows.add({"spareName": "", "spareCode": "", "itemType": "", "noOff": "", "others": "","loc_cd" : "","closing" : "","error": ""}
                                 );
                               });
                             },
@@ -1257,10 +1295,33 @@ class _RectificationDetailPageState extends State<RectificationDetailPage> {
               ),
               TextButton(
                 onPressed: () {
+                  bool hasError = false;
+
+                  for (var row in rows) {
+                    final qty = double.tryParse(row['noOff']?.toString() ?? "0") ?? 0;
+                    final closing = double.tryParse(row['closing']?.toString() ?? "0") ?? 0;
+
+                    if (qty <= 0 || qty > closing) {
+                      hasError = true;
+                      row['error'] =
+                      "Quantity must be between 1 and $closing";
+                    }
+                  }
+
+                  if (hasError) {
+                    setState(() {}); // refresh UI
+                    return; // 🚫 DO NOT CLOSE DIALOG
+                  }
+
+                  // ✅ All good
                   Navigator.pop(context, rows);
                 },
-                child: const Text("Save", style: TextStyle(fontWeight: FontWeight.bold)),
+                child: const Text(
+                  "Save",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
+
             ],
           );
         });
@@ -1338,6 +1399,8 @@ class _RectificationDetailPageState extends State<RectificationDetailPage> {
                             spareName.value = item.description;
                             spareCode.value = item.itemCode;
                             itemType.value = item.itemType;
+                            locCode.value = item.loc_cd;
+                            closing.value = item.closing;
                             // rows[rowIndex]["spareCode"] = item.itemCode;
                             // rows[rowIndex]["itemType"] = item.itemType;
                             Navigator.pop(context);
@@ -1345,7 +1408,17 @@ class _RectificationDetailPageState extends State<RectificationDetailPage> {
                           child: Container(
                             width: double.infinity,
                             padding: const EdgeInsets.all(8),
-                            child: Text(item.description, style: const TextStyle(fontSize: 15)),
+                            color: index%2 == 0 ? Colors.blue.shade50 : Colors.red.shade50,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(item.description, style: const TextStyle(fontSize: 15)),
+                                Text("Current Stock - ${item.closing}",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold
+                                ),)
+                              ],
+                            ),
                           ),
                         ),
                         const Divider(height: 0.8, thickness: 1, color: Colors.grey),
@@ -1504,6 +1577,7 @@ class _RectificationDetailPageState extends State<RectificationDetailPage> {
           "no_off": int.tryParse(e["noOff"] ?? "0") ?? 0,
           "item_type": e["itemType"] ?? "",
           "others": e["others"] ?? "",
+          "loc_cd" : e["loc_cd"] ?? ""
         };
       }).toList(),
     };
