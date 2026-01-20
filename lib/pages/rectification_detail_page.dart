@@ -1470,29 +1470,57 @@ class _RectificationDetailPageState extends State<RectificationDetailPage> {
         height: 45,
         width: double.infinity,
         margin: const EdgeInsets.only(bottom: 15),
-        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 14),
+        padding: const EdgeInsets.symmetric(horizontal: 14),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.grey.shade300),
         ),
-        child: controller != null
-            ? TextField(
-          controller: controller,
-          readOnly: readOnly,
-          decoration: InputDecoration(
-              border: InputBorder.none,
-              hintStyle:  TextStyle(color: widget.status == "OPN" ?Colors.grey:Colors.black, fontSize: 14),
-              hintText: hint),
-          style: const TextStyle(fontSize: 14, color: Colors.black87),
-        )
-            : Text(
-          value ?? hint,
-          style: TextStyle(fontSize: 14, color: value == null ? Colors.black54 : Colors.black87),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center, // ✅ vertical center
+          children: [
+            Expanded(
+              child: controller != null
+                  ? TextField(
+                controller: controller,
+                readOnly: readOnly,
+                maxLines: 1,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  isDense: true,
+                  contentPadding: EdgeInsets.zero,
+                  hintText: hint,
+                  hintStyle: TextStyle(
+                    color: widget.status == "OPN"
+                        ? Colors.grey
+                        : Colors.black,
+                    fontSize: 14,
+                  ),
+                ),
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.black87,
+                  height: 1.0, // ✅ crucial
+                ),
+              )
+                  : Text(
+                value ?? hint,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 14,
+                  color:
+                  value == null ? Colors.black54 : Colors.black87,
+                  height: 1.0, // ✅ match TextField
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
+
 
   Widget _gradientButton(String text) {
     return Container(
@@ -1916,7 +1944,7 @@ class _RectificationDetailPageState extends State<RectificationDetailPage> {
                               ),
                             ),
                             Expanded(
-                              flex: 3,
+                              flex: 2,
                               child: Text(
                                 "Item Type",
                                 textAlign: TextAlign.center,
@@ -1926,7 +1954,7 @@ class _RectificationDetailPageState extends State<RectificationDetailPage> {
                               ),
                             ),
                             Expanded(
-                              flex: 1,
+                              flex: 2,
                               child: Text(
                                 "No Off",
                                 textAlign: TextAlign.center,
@@ -1997,7 +2025,7 @@ class _RectificationDetailPageState extends State<RectificationDetailPage> {
 
                                 /// REASON
                                 Expanded(
-                                  flex: 3,
+                                  flex: 2,
                                   child: Container(
                                     padding: const EdgeInsets.all(10),
                                     child: Center(
@@ -2012,7 +2040,7 @@ class _RectificationDetailPageState extends State<RectificationDetailPage> {
 
                                 /// REMARKS
                                 Expanded(
-                                  flex: 1,
+                                  flex: 2,
                                   child: Container(
                                     padding: const EdgeInsets.all(10),
                                     child: Center(

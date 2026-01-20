@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:goerp/service/report_service.dart';
+import 'package:goerp/service/reportlist_service.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
 import '../errors/api_error.dart';
@@ -70,9 +72,9 @@ class LoginService {
     final body = {
       //'comp_code': _companyName.companyCode,
       // 'userId': _userEntry.userId
-      'userId': _userEntry.userId
+      'userId': userId
     };
-   //  print(body);
+     print("Hii User Id is ${_userEntry.userId}");
     var url = root1 + 'getUnitList';
     try {
       final response = await http.post(Uri.parse(url), body: json.encode(body), headers: headers);
@@ -129,29 +131,54 @@ class LoginService {
   //   }
   // }
 
-  Future<void> logIn(
-      {required String userName,required String userPass, required String unitCode}) async {
+  Future<void> logIn({
+    required String userName,
+    required String userPass,
+    required String unitCode,
+  }) async {
     final body = {
       'unit_cd': unitCode,
       'userId': _userEntry.userId,
       'username': userName,
-      'userPass': userPass
+      'userPass': userPass,
     };
-      print(body);
+
     var url = root1 + 'loginterms';
+
     try {
-      final response = await http.post(Uri.parse(url),
-          body: json.encode(body), headers: headers);
+      final response = await http.post(
+        Uri.parse(url),
+        body: json.encode(body),
+        headers: headers,
+      );
 
       final responseBody = json.decode(response.body);
+
       final isLoggedIn = responseBody['status'] == "true";
-      final Emp_Id = responseBody["Emp_Id"];
-      final unit_cd = responseBody["unit_cd"];
-      final user_id = responseBody["userId"];
-      await prefsBox.put(kEmpCd, Emp_Id);
-      await prefsBox.put(kUnitCd, unit_cd);
-      await prefsBox.put(kUserId, user_id);
       if (!isLoggedIn) throw const ApiError('User not found');
+
+      final empId = responseBody["Emp_Id"];
+      final unitCd = responseBody["unit_cd"];
+      final userId = responseBody["userId"];
+
+      await prefsBox.put(kEmpCd, empId);
+      await prefsBox.put(kUnitCd, unitCd);
+      await prefsBox.put(kUserId, userId);
+
+      /// 🔥 NEW PART (SAFE + CLEAN)
+      final reportService = ReportService();
+      final reportListService = ReportListService();
+
+      final reports = await reportService.getReportList(userId);
+      final utilityList = await reportListService.getReportList(
+        userId,
+        'Utility',
+        'U',
+      );
+
+      await prefsBox.put(kHasReports, reports.isNotEmpty);
+      await prefsBox.put(kHasUtility, utilityList.isNotEmpty);
+
     } catch (e) {
       _handleError(e);
     }

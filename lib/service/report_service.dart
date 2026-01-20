@@ -28,10 +28,4 @@ Future<List<ReportModel>> getReportList(String userId) async {
   }
   return [];
 }
-_handleError(var e) {
-  if (e is SocketException) throw ApiError.internet();
-  if (e is TimeoutException) throw ApiError.timeOut();
-  if (e is ApiError) throw e;
-  throw ApiError.unKnown();
-}
 }

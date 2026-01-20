@@ -133,12 +133,13 @@ class _HomePageState extends State<HomePage> {
             Text(
               title,
               style:  TextStyle(
-                  color: Colors.black, fontSize: 16.dw, fontWeight: FontWeight.w600),
+                  color: Colors.black, fontSize: 14.dw, fontWeight: FontWeight.w500),
             ),
             Text(
-              title1,
+              "jfkejf fekrwk fekrek kfeokrek kferk oedoe fekdfkd fkdkfkdf fkkfdf kfdfk",
+              maxLines: 2,
               style:  TextStyle(
-                  color: Colors.black, fontSize: 16.dw, fontWeight: FontWeight.w600),
+                  color: Colors.black, fontSize: 14.dw, fontWeight: FontWeight.w500),
             ),
           ],
         ),
@@ -153,15 +154,24 @@ class _HomePageState extends State<HomePage> {
         //color: AppColors.primary1,
         elevation: 10.0.dw,
         margin: EdgeInsets.all(10.0.dh),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildCompanyName(title: unitCd + "-",
-                title1: compName
-            )
-          ],
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+        ),
+        child:Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "$unitCd - $compName",
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 14.dw,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
         ),
       ),
     );
