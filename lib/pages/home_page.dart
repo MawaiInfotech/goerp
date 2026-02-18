@@ -13,6 +13,7 @@ import 'package:goerp/themes/app_colors.dart';
 import 'package:goerp/utils/screen_size_config.dart';
 
 import '../model/unitlist_model.dart';
+import '../widgets/secure_screen_wrapper.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -71,13 +72,18 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        extendBody: true,
-        extendBodyBehindAppBar: true,
-        backgroundColor: Colors.white,
-        body: _buildBody());
+    return SecureScreenWrapper(
+      child: Scaffold(
+          extendBody: true,
+          extendBodyBehindAppBar: true,
+          backgroundColor: Colors.white,
+          body: _buildBody()),
+    );
   }
 
   _buildBody() {
@@ -136,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.black, fontSize: 14.dw, fontWeight: FontWeight.w500),
             ),
             Text(
-              "jfkejf fekrwk fekrek kfeokrek kferk oedoe fekdfkd fkdkfkdf fkkfdf kfdfk",
+              "",
               maxLines: 2,
               style:  TextStyle(
                   color: Colors.black, fontSize: 14.dw, fontWeight: FontWeight.w500),
