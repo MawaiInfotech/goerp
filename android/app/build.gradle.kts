@@ -36,8 +36,8 @@ android {
         applicationId = "com.terms2020.mawai"
         minSdk = flutter.minSdkVersion
         targetSdk = 36
-        versionCode = 7
-        versionName = "1.0.1"
+        versionCode = 8
+        versionName = "1.0.2"
     }
 
     signingConfigs {

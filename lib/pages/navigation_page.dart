@@ -120,7 +120,7 @@ class _NavigationPageState extends State<NavigationPage> {
       child: Scaffold(
         backgroundColor: Colors.grey.shade200,
         appBar: const AppTopBar(),
-        drawer: Drawerui(),
+        drawer: const Drawerui(),
         bottomNavigationBar: Container(
           color: AppColors.red,
           child: CurvedNavigationBar(

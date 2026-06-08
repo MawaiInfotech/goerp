@@ -23,7 +23,10 @@ class _MyAppState extends State<MyApp> {
         theme: AppTheme.theme,
      //   initialRoute: AppRoutes.splashScreenPage,
         routes: AppRoutes.getRoutes(context),
-        home: empCd == "" ? const DomainScreen() : const NavigationPage(),
+        home: empCd.isEmpty ||
+            prefsBox.get(kipAddress) == null
+            ? const DomainScreen()
+            : const NavigationPage(),
       ),
     );
   }

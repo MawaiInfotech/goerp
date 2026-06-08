@@ -70,6 +70,15 @@ class _DraweruiState extends State<Drawerui> with SingleTickerProviderStateMixin
                 ),
                 accountName: Text(compName,style: const TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                 accountEmail: Text(empCd,style: const TextStyle(fontSize: 15))), compName == "DPS GROUP" ? Expanded(child: _buildDrawer()) : Expanded(child: Container()),
+            // ListTile(
+            //   leading: const Icon(Icons.smart_toy_outlined, color: Colors.blue),
+            //   title: const Text('AI Assistant'),
+            //   subtitle: const Text('Gemini · Groq · OpenRouter · Claude'),
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //     Navigator.pushNamed(context, '/chatbotPage');
+            //   },
+            // ),
             SafeArea(
               bottom: true,
               child: Padding(
@@ -163,6 +172,7 @@ class _DraweruiState extends State<Drawerui> with SingleTickerProviderStateMixin
             ),
           ),
         ),
+
         // InkWell(
         //   onTap: (){
         //     _sosOnOff("N");

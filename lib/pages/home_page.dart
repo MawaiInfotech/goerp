@@ -212,8 +212,7 @@ class _HomePageState extends State<HomePage> {
               },
               child: Card(
                 elevation: 10.0,
-                shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.dw)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.dw)),
                 color: colors[index],
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

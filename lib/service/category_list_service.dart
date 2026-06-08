@@ -38,9 +38,7 @@ class CategoryListService {
       'unit': unitCd,
       'doctp': docType,
     };
-   // print(body);
     var url = root1 + 'getDocList';
-// print(url);
     final response = await http.post(Uri.parse(url), body: json.encode(body), headers: headers);
     try {
       final responseBody = json.decode(response.body);

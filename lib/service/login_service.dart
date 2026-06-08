@@ -70,11 +70,8 @@ class LoginService {
 
   Future<List<UnitListModel>?> getUnitListBreakdown() async {
     final body = {
-      //'comp_code': _companyName.companyCode,
-      // 'userId': _userEntry.userId
       'userId': userId
     };
-     print("Hii User Id is ${_userEntry.userId}");
     var url = root1 + 'getUnitList';
     try {
       final response = await http.post(Uri.parse(url), body: json.encode(body), headers: headers);
@@ -142,7 +139,7 @@ class LoginService {
       'username': userName,
       'userPass': userPass,
     };
-    print(body);
+    // print(body);
     var url = root1 + 'loginterms';
 
     try {

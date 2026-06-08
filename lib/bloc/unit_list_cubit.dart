@@ -16,8 +16,8 @@ class UnitListCubit extends Cubit<List<UnitListModel>> {
      final unitList = await loginService.getUnitList();
      log(unitList.toString());
      emit(unitList!);
-    }on ApiError catch (error) {
-      throw error;
+    }on ApiError {
+      rethrow;
     }
   }
 
@@ -27,8 +27,8 @@ class UnitListCubit extends Cubit<List<UnitListModel>> {
       final unitList = await loginService.getUnitListBreakdown();
       log(unitList.toString());
       emit(unitList!);
-    }on ApiError catch (error) {
-      throw error;
+    }on ApiError {
+      rethrow;
     }
   }
 
