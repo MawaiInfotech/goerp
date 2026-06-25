@@ -38,12 +38,14 @@ class CategoryListModel with _$CategoryListModel {
       _$CategoryListModelFromJson(json);
 
   bool  isSearched(String query){
+    final search = query.toLowerCase().trim();
     return docType.toLowerCase().contains(query) ||
         docName.toLowerCase().contains(query) ||
         po_no.toLowerCase().contains(query) ||
         doc_app_type.toLowerCase().contains(query) ||
     amtFrom.toLowerCase().contains(query)||
     amd_no.toLowerCase().contains(query)||
+    name.toLowerCase().contains(search)||
     po_dt.toLowerCase().contains(query);
   }
 

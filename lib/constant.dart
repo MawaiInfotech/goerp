@@ -9,6 +9,8 @@ const kUserId= "userId";
 const kCompanyName= "comp_name";
 const kHasReports = 'has_reports';
 const kHasUtility = 'has_utility';
+const kUsername = 'username';
+const kPassword = 'password';
 
 
 final prefsBox = Hive.box(kPrefsBox);
@@ -16,3 +18,5 @@ String get empCd => prefsBox.get(kEmpCd, defaultValue: "");
 String get unitCd => prefsBox.get(kUnitCd);
 String get userId => prefsBox.get(kUserId);
 String get compName => prefsBox.get(kCompanyName);
+String get username => prefsBox.get(kUsername, defaultValue: "");
+String get password => prefsBox.get(kPassword, defaultValue: "");

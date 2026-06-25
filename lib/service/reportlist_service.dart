@@ -8,7 +8,7 @@ import 'constants.dart';
 
 class ReportListService{
 
-  var _reportList = const ReportListModel();
+  final _reportList = const ReportListModel();
 
   ReportListModel get reportList => _reportList;
 
@@ -18,14 +18,12 @@ class ReportListService{
       'modules': modules,
       'filetp' : filetp
     };
-print(body);
     var url = root1 + 'getListOfModuleDetail';
 
     final response = await http.post(Uri.parse(url),
         body: json.encode(body), headers: headers);
     try {
       final responseBody = json.decode(response.body);
-print(responseBody);
       final itemList = responseBody['model'] as List;
       return itemList.map((e) => ReportListModel.fromJson(e)).toList();
     } catch (e) {
@@ -33,7 +31,6 @@ print(responseBody);
     }
     return [];
   }
-
 
   _handleError(var e) {
     if (e is SocketException) throw ApiError.internet();

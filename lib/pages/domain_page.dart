@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:goerp/routes/app_routes.dart';
 import 'package:goerp/themes/app_colors.dart';
 import 'package:goerp/utils/screen_size_config.dart';
 import '../constant.dart';
+import 'login_page.dart';
 
 class DomainScreen extends StatefulWidget {
   const DomainScreen({Key? key}) : super(key: key);
@@ -25,10 +27,10 @@ class _DomainScreenState extends State<DomainScreen> {
   void initState(){
     super.initState();
     final ipAddress = prefsBox.get(kipAddress);
-    if(ipAddress != null) {
-      Future.microtask(() =>  Navigator.popAndPushNamed(context, AppRoutes.loginPage)// if exist redirect to home screen
-      );
-    }
+    // if(ipAddress != null) {
+    //   Future.microtask(() =>  Navigator.popAndPushNamed(context, AppRoutes.loginPage)// if exist redirect to home screen
+    //   );
+    // }
   }
 
   @override
@@ -66,7 +68,12 @@ class _DomainScreenState extends State<DomainScreen> {
                         onPressed: () async {
                           ipNumber = ipController.text;
                           await prefsBox.put(kipAddress, ipNumber);
-                          Navigator.pushReplacementNamed(context, AppRoutes.loginPage);
+                          Navigator.of(context).pushAndRemoveUntil(
+                            CupertinoPageRoute(
+                              builder: (_) => const LoginPage(),
+                            ),
+                                (route) => false,
+                          );
                         },
                         child: const Icon(Icons.arrow_forward_ios)
                     )

@@ -1,6 +1,7 @@
 import 'package:animated_widgets/widgets/opacity_animated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:goerp/constant.dart';
 import 'package:provider/provider.dart';
 import 'package:goerp/bloc/login_bloc.dart';
 import 'package:goerp/bloc/unit_list_cubit.dart';
@@ -14,6 +15,7 @@ import 'package:goerp/utils/screen_size_config.dart';
 import 'package:goerp/widgets/apptextfield.dart';
 import '../animation/termsanimation.dart';
 import '../model/companyname_model.dart';
+import '../routes/app_routes.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -26,12 +28,27 @@ class _LoginPageState extends State<LoginPage> {
   late final LogInPageBloc bloc;
   late final UnitListCubit unitListCubit;
 
+  final userController = TextEditingController();
+  final passController = TextEditingController();
+
+  bool rememberMe = false;
+  late String savedUser;
+  late String savedPass;
+
   @override
   void initState() {
     final loginService = Provider.of<LoginService>(context, listen: false);
     bloc = LogInPageBloc(loginService);
     unitListCubit = UnitListCubit(loginService);
     bloc.getCompanyDetails();
+    userController.text =
+        prefsBox.get(kUsername) ?? '';
+
+    passController.text =
+        prefsBox.get(kPassword) ?? '';
+
+    bloc.updateUsername(userController.text);
+    bloc.updatePassword(passController.text);
     super.initState();
   }
 
@@ -42,14 +59,35 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Colors.white,
           resizeToAvoidBottomInset: true,
           //Bottom Navigation Bar
-          bottomNavigationBar: const BottomAppBar(
+          bottomNavigationBar:  const BottomAppBar(
             elevation: 0.0,
             color: Colors.transparent,
+         //   height: 80,
             child: Text(
-              "© Mawai infotech Ltd. All Rights Reserved",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: AppColors.black),
-            ),
+                    "© Mawai infotech Ltd. All Rights Reserved",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: AppColors.black,
+                    ),
+                  ),
+
+            // Column(
+            //   children: [
+            //     TextButton(
+            //         onPressed: (){
+            //           Navigator.pushReplacementNamed(context, AppRoutes.domainPage);
+            //         }, child: Text("Change Domain ?",
+            //     style: TextStyle(
+            //       color: AppColors.red,
+            //       fontWeight: FontWeight.w500
+            //     ),)),
+            //     Text(
+            //       "© Mawai infotech Ltd. All Rights Reserved",
+            //       textAlign: TextAlign.center,
+            //       style: TextStyle(color: AppColors.black,
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ),
           body: SafeArea(
               child: BlocConsumer<LogInPageBloc, LoginPageState>(
@@ -140,14 +178,41 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         AppTextField(
             hintText: "User Code",
+            controller: userController,
+
             icon: Icons.person,
             error: model.errors['userName'],
             onSearchChanged: bloc.updateUsername),
         AppTextField(
           hintText: "Password",
           isPassword: true,
+          // text: savedPass,
+          controller: passController,
+          icon: Icons.lock_open,
           error: model.errors['password'],
           onSearchChanged: bloc.updatePassword,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.dw),
+          child: Row(
+            children: [
+              Checkbox(
+                value: rememberMe,
+                activeColor: AppColors.red,
+                onChanged: (value) {
+                  setState(() {
+                    rememberMe = value ?? false;
+                  });
+                },
+              ),
+              const Text(
+                "Remember Me",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
         ),
         //SignIn  button
         _buildSignInButton()
@@ -168,7 +233,8 @@ class _LoginPageState extends State<LoginPage> {
         //padding: EdgeInsets.all(60),
         child: ElevatedButton(
           onPressed: () {
-            bloc.logIn();
+            bloc.logIn(rememberMe
+            );
           },
           child:  Text(
             "Sign In",

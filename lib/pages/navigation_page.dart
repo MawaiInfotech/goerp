@@ -154,8 +154,14 @@ class _NavigationPageState extends State<NavigationPage> {
             child: const Text("No"),
           ),
           ElevatedButton(
-            onPressed: () {
-              prefsBox.clear();
+            onPressed: ()  async {
+              await prefsBox.delete(kEmpCd);
+              await prefsBox.delete(kUserId);
+              await prefsBox.delete(kUnitCd);
+
+              await prefsBox.delete(kHasReports);
+              await prefsBox.delete(kHasUtility);
+
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(

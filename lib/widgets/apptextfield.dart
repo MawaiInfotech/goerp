@@ -12,7 +12,7 @@ class AppTextField extends StatefulWidget {
     this.isPassword = false,
     this.icon = Icons.search,
     this.borderColor = Colors.black,
-    Key? key,
+    Key? key, this.controller,
   }) : super(key: key);
 
   final void Function(String) onSearchChanged;
@@ -22,20 +22,29 @@ class AppTextField extends StatefulWidget {
   final Color borderColor;
   final IconData icon;
   final String text;
+  final TextEditingController? controller;
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
 }
 
 class _AppTextFieldState extends State<AppTextField> {
-  final controller = TextEditingController();
+  late final TextEditingController controller;
 
+  bool _obscureText = true;
   @override
   void initState() {
-    controller.text = widget.text;
+    controller = widget.controller ??
+        TextEditingController(text: widget.text);
     super.initState();
   }
-
+  @override
+  void dispose() {
+    if (widget.controller == null) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return OpacityAnimatedWidget.tween(
@@ -56,16 +65,39 @@ class _AppTextFieldState extends State<AppTextField> {
                   child: TextField(
                     controller: controller,
                     onChanged: widget.onSearchChanged,
-                    obscureText: widget.isPassword,
+                    obscureText: widget.isPassword
+                        ? _obscureText
+                        : false,
                     decoration: InputDecoration(
                       hintText: widget.hintText,
                       fillColor: Colors.white,
                       filled: true,
-                      suffixIcon: Icon(widget.icon),
+
+                      prefixIcon: Icon(
+                        widget.icon,
+                        color: Colors.grey.shade700,
+                      ),
+
+                      suffixIcon: widget.isPassword
+                          ? IconButton(
+                        icon: Icon(
+                          _obscureText
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscureText = !_obscureText;
+                          });
+                        },
+                      )
+                          : null,
+
                       contentPadding: EdgeInsets.all(15.dw),
+
                       focusedBorder: _border(),
-                      disabledBorder: _border(),
                       enabledBorder: _border(),
+                      disabledBorder: _border(),
                     ),
                   ),
                 ),

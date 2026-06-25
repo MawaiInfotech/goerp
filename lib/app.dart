@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:goerp/constant.dart';
 import 'package:goerp/pages/domain_page.dart';
+import 'package:goerp/pages/login_page.dart';
 import 'package:goerp/pages/navigation_page.dart';
 import 'package:goerp/routes/app_routes.dart';
 import 'package:goerp/themes/app_theme.dart';
@@ -23,10 +24,10 @@ class _MyAppState extends State<MyApp> {
         theme: AppTheme.theme,
      //   initialRoute: AppRoutes.splashScreenPage,
         routes: AppRoutes.getRoutes(context),
-        home: empCd.isEmpty ||
+        home:
             prefsBox.get(kipAddress) == null
             ? const DomainScreen()
-            : const NavigationPage(),
+            : const LoginPage(),
       ),
     );
   }

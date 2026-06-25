@@ -23,7 +23,6 @@ class CategoryListService {
     final response = await http.post(Uri.parse(url), body: json.encode(body), headers: headers);
     try {
       final responseBody = json.decode(response.body);
-      print(responseBody);
       final itemList = responseBody['getAllCategory'] as List;
       return itemList.map((e) => CategoryListModel.fromJson(e)).toList();
     } catch (e) {

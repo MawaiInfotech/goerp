@@ -85,8 +85,7 @@ class _DraweruiState extends State<Drawerui> with SingleTickerProviderStateMixin
                 padding: const EdgeInsets.all(10.0),
                 child: ElevatedButton(
                   onPressed: () async {
-                    Navigator.of(context)
-                        .pushAndRemoveUntil(
+                    Navigator.of(context).pushAndRemoveUntil(
                       CupertinoPageRoute(
                           builder: (context) => const LoginPage()
                       ),

@@ -19,13 +19,10 @@ class ApprovePageService {
       'docappdoctp':docAppType,
       'docunit': unitCode,
     };
-    print(body);
     var url = root1 + 'createAppData';
-    print(url);
     final response = await http.post(Uri.parse(url), body: json.encode(body), headers: headers);
     try {
       final responseBody = json.decode(response.body);
-      print(responseBody);
       // if (responseBody['status'] == true) {
       //   final itemList = responseBody['data'] as List;
       //   return itemList.map((e) => CatalogueModel.fromJson(e)).toList();

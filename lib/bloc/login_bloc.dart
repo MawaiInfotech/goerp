@@ -11,20 +11,36 @@ class LogInPageBloc extends Cubit<LoginPageState> {
   final LoginService loginService;
 
   void getCompanyDetails() async {
+
     emit(LoginPageState.loading(state.form));
-    var form = state.form;
 
     try {
-      final companyDetails = await loginService.getCompanyName();
-      if (companyDetails != null) {
-        form = form.copyWith(companyName: companyDetails);
-      }
-      emit(LoginPageState.content(form));
-    } on ApiError catch (error) {
-      emit(LoginPageState.failed(state.form, error.message));
-    }
 
-    emit(LoginPageState.content(form));
+      final companyDetails =
+      await loginService.getCompanyName();
+
+      if (companyDetails != null) {
+
+        emit(
+          LoginPageState.content(
+            state.form.copyWith(
+              companyName: companyDetails,
+            ),
+          ),
+        );
+
+      }
+
+    } on ApiError catch (error) {
+
+      emit(
+        LoginPageState.failed(
+          state.form,
+          error.message,
+        ),
+      );
+
+    }
   }
 
   void updateUsername(String userName) => _updateAttributes(userName: userName);
@@ -44,7 +60,7 @@ class LogInPageBloc extends Cubit<LoginPageState> {
     emit(LoginPageState.content(form));
   }
 
-  void logIn() async {
+  void logIn(bool isRememberMe) async {
     _validate();
 
     var form = state.form;
@@ -58,7 +74,8 @@ class LogInPageBloc extends Cubit<LoginPageState> {
       await loginService.logIn(
           userPass: form.userPass,
           unitCode: form.unitCode,
-          userName: form.userName);
+          userName: form.userName,
+          isRemembered: isRememberMe);
       emit(LoginPageState.success(form));
     } on ApiError catch (e) {
       emit(LoginPageState.failed(form, e.message));
@@ -66,7 +83,9 @@ class LogInPageBloc extends Cubit<LoginPageState> {
   }
 
   _validate() {
+
     var form = state.form;
+
     emit(LoginPageState.loading(form));
     final errors = <String, String?>{};
     if (form.userPass.isEmpty) {

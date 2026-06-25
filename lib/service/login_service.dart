@@ -132,6 +132,7 @@ class LoginService {
     required String userName,
     required String userPass,
     required String unitCode,
+    required bool isRemembered,
   }) async {
     final body = {
       'unit_cd': unitCode,
@@ -152,7 +153,13 @@ class LoginService {
       final responseBody = json.decode(response.body);
 
       final isLoggedIn = responseBody['status'] == "true";
-      if (!isLoggedIn) throw const ApiError('User not found');
+      if (!isLoggedIn) {
+        final apiMessage =
+
+                responseBody['message']?.toString() ?? 'Login Failed';
+
+        throw ApiError(apiMessage);
+      }
 
       final empId = responseBody["Emp_Id"];
       final unitCd = responseBody["unit_cd"];
@@ -161,6 +168,11 @@ class LoginService {
       await prefsBox.put(kEmpCd, empId);
       await prefsBox.put(kUnitCd, unitCd);
       await prefsBox.put(kUserId, userId);
+      if(isRemembered){
+        await prefsBox.put(kUsername, userName);
+        await prefsBox.put(kPassword, userPass);
+      }
+
 
       /// 🔥 NEW PART (SAFE + CLEAN)
       final reportService = ReportService();

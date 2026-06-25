@@ -17,9 +17,7 @@ class GraphService{
         body: json.encode(body), headers: headers);
     try {
       final responseBody = json.decode(response.body);
-      // print(responseBody);
       final itemList = responseBody['model'] as List;
-      print(itemList);
       return itemList.map((e) => GraphModel.fromJson(e)).toList();
 
     } catch (e) {
@@ -30,7 +28,6 @@ class GraphService{
 
 
   _handleError(var e) {
-    // print(e);
     if (e is SocketException) throw ApiError.internet();
     if (e is TimeoutException) throw ApiError.timeOut();
     if (e is ApiError) throw e;

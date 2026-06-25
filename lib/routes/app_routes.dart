@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:goerp/pages/attendance_page.dart';
 import 'package:goerp/pages/breakdown_page.dart';
 import 'package:goerp/pages/domain_page.dart';
 import 'package:goerp/pages/navigation_page.dart';
 import 'package:goerp/pages/profile_page.dart';
 import 'package:goerp/pages/splashscreen_page.dart';
-import '../pages/chatbot_page.dart';
 import '../pages/home_page.dart';
 import '../pages/login_page.dart';
 
@@ -35,8 +33,8 @@ class AppRoutes {
       profilePage: (_) => const ProfilePage(),
       domainPage: (_) => const DomainScreen(),
       attendancePage: (_) => const AttendancePage(),
-      splashScreenPage: (_) => SplachScreenPage(),
-      breakdownPage: (_) => BreakdownPage(),
+      splashScreenPage: (_) => const SplachScreenPage(),
+      breakdownPage: (_) => const BreakdownPage(),
     //  chatbotPage: (_) => const ChatbotPage(),
       //leavePage: (_) => const LeavePage()
       // reportListPage: (_) => ReportListPage(),
