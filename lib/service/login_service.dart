@@ -151,6 +151,7 @@ class LoginService {
       );
 
       final responseBody = json.decode(response.body);
+      print(responseBody);
 
       final isLoggedIn = responseBody['status'] == "true";
       if (!isLoggedIn) {
