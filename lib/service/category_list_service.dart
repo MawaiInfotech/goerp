@@ -11,13 +11,10 @@ class CategoryListService {
 
   // CategoryListModel get getCategoryDetails => _categoryListModel;
 
-  Future<List<CategoryListModel>> getCategoryList(
-      String empCd, String unitCd) async {
+  Future<List<CategoryListModel>> getCategoryList(String empCd, String unitCd) async {
     final body = {
       'empcd': empCd,
-       //'unit': unitCd
     };
-   print(empCd);
     var url = root1 + 'getDocCount';
 
     final response = await http.post(Uri.parse(url), body: json.encode(body), headers: headers);
@@ -59,12 +56,10 @@ class CategoryListService {
       final responseBody = json.decode(response.body);
       if(responseBody["status"] == 200){
         return responseBody["message"];
-
       }else{
         throw ApiError.fromResponse(responseBody["message"]);
       }
     }catch(e){
-      print(e);
       _handleError(e);
     }
     return null;

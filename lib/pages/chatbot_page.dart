@@ -377,7 +377,8 @@ class _ChatbotPageState extends State<ChatbotPage> with TickerProviderStateMixin
       if (_scrollController.hasClients) {
         _scrollController.animateTo(
             _scrollController.position.maxScrollExtent,
-            duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+            duration: const Duration(milliseconds: 300), curve: Curves.easeOut
+        );
       }
     });
   }
